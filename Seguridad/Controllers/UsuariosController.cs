@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Seguridad.Models;
 
@@ -55,7 +58,8 @@ namespace Seguridad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Apellido,Email,Password,Status")] Usuario usuario)
         {
-           
+
+            usuario.Password = CalcularHashMD5(usuario.Password);
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -153,6 +157,25 @@ namespace Seguridad.Controllers
         private bool UsuarioExists(int id)
         {
           return _context.Usuarios.Any(e => e.IdUsuario == id);
+        }
+
+        private string CalcularHashMD5(string texto)
+        {
+            using (MD5 md5 = MD5.Create()){
+                //Convierte la cadena de texto a bytes
+                byte[] inputbytes= Encoding.UTF8.GetBytes(texto);
+
+                //Calcula el hash MD5 de los bytes
+                byte[] HashBytes = md5.ComputeHash(inputbytes);
+
+                //convierte el hash a una cadena hexadecimal
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < HashBytes.Length; i++)
+                {
+                    sb.Append(HashBytes[i].ToString("x2"));
+                }
+                return sb.ToString();
+            }
         }
     }
 }
