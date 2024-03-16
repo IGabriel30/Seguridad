@@ -40,9 +40,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-           
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                    @if(item.Status == 1)
+                    {
+                        <span>Activo</span>
+                    }
+                    else
+                    {
+                       <span>Inactivo</span>
+                    }
+                    @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdUsuario">Edit</a> |
