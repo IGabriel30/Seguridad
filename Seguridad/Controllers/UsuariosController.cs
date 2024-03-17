@@ -119,7 +119,7 @@ namespace Seguridad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             
-            return View(usuario);
+            //return View(usuario);
         }
 
         // GET: Usuarios/Delete/5

@@ -8,10 +8,10 @@
 
 <h4>Usuario</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdUsuario"/>
             <div class="row">
                 <div class="form-group col-md-4">
                     <label asp-for="Nombre" class="control-label"></label>
@@ -33,7 +33,10 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" />
+                    <select asp-for="Status" class="form-control">
+                        <option value="1">Activo</option>
+                        <option value="2">Inactivo</option>
+                    </select>
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
             </div>
@@ -44,12 +47,6 @@
                 </div>
             </div>
         </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
