@@ -98,7 +98,12 @@ namespace Seguridad.Controllers
          
                 try
                 {
-                    _context.Update(usuario);
+                var usuarioUpdate = await _context.Usuarios.FirstOrDefaultAsync(s => s.IdUsuario == id);
+                usuarioUpdate.Nombre = usuario.Nombre;
+                usuarioUpdate.Apellido = usuario.Apellido;
+                usuarioUpdate.Email = usuario.Email;
+                usuario.Status = usuario.Status;
+                    _context.Update(usuarioUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
