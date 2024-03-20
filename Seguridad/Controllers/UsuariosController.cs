@@ -22,9 +22,23 @@ namespace Seguridad.Controllers
         }
 
         // GET: Usuarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Usuario usuario)
         {
-              return View(await _context.Usuarios.ToListAsync());
+            var query = _context.Usuarios.AsQueryable();
+            if(string.IsNullOrWhiteSpace(usuario.Nombre) == false)
+            {
+                query = query.Where(s => s.Nombre.Contains(usuario.Nombre));
+            }
+            if (string.IsNullOrWhiteSpace(usuario.Apellido) == false)
+            {
+                query = query.Where(s => s.Apellido.Contains(usuario.Apellido));
+            }
+            if (usuario.Status ==1 || usuario.Status ==2)
+            {
+                query = query.Where(s => s.Status == usuario.Status);
+            }
+            return query != null ? View(await query.ToListAsync()):
+                Problem("Entity set 'ApplicationDbContext.Usuarios'  is null.");
         }
 
         // GET: Usuarios/Details/5
