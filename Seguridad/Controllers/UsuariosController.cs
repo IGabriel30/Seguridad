@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,6 +17,7 @@ using Seguridad.Models;
 
 namespace Seguridad.Controllers
 {
+    [Authorize]
     public class UsuariosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -72,7 +74,8 @@ namespace Seguridad.Controllers
 
         // GET: Usuarios/Login
         //Carga la vista
-        public async Task<IActionResult> LoginAsync(string ReturnUrl)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string ReturnUrl)
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             ViewBag.ReturnUrl = ReturnUrl;
@@ -80,6 +83,7 @@ namespace Seguridad.Controllers
         }
 
         //se recibe, se comparann datos
+        [AllowAnonymous] /*Especifica que la clase o el método a los que se aplica este atributo no requiere autorización.*/
         [HttpPost]
         public async Task<IActionResult> Login([Bind("Email,Password")] Usuario usuario, string ReturnUrl)
         {
