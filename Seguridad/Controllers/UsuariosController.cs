@@ -72,9 +72,10 @@ namespace Seguridad.Controllers
 
         // GET: Usuarios/Login
         //Carga la vista
-        public IActionResult Login(string ReturnUrl)
+        public async Task<IActionResult> LoginAsync(string ReturnUrl)
         {
-            ViewBag.pReturnUrl = ReturnUrl;
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
 
