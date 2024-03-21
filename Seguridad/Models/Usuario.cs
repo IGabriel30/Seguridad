@@ -27,6 +27,9 @@ namespace Seguridad.Models
         [Required(ErrorMessage = "El estatus es requerido")]
         public byte Status { get; set; }
 
+        [Required(ErrorMessage = "El Rol de usuario es requerido")]
+        public string Rol { get; set; }
+
         [NotMapped]//esta prpiedad no sera mapeada en la base de datos.
         [Compare("Password", ErrorMessage ="La contraseña no coincide")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe de tener entre 6 y 100 carcateres")]

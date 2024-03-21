@@ -122,7 +122,7 @@ namespace Seguridad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Apellido,Email,Password,Status")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Apellido,Email,Password,Status,Rol")] Usuario usuario)
         {
 
             usuario.Password = CalcularHashMD5(usuario.Password);
@@ -154,7 +154,7 @@ namespace Seguridad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,Nombre,Apellido,Email,Status")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,Nombre,Apellido,Email,Rol,Status")] Usuario usuario)
         {
             if (id != usuario.IdUsuario)
             {
@@ -168,8 +168,9 @@ namespace Seguridad.Controllers
                 usuarioUpdate.Nombre = usuario.Nombre;
                 usuarioUpdate.Apellido = usuario.Apellido;
                 usuarioUpdate.Email = usuario.Email;
-                usuario.Status = usuario.Status;
-                    _context.Update(usuarioUpdate);
+                usuarioUpdate.Status = usuario.Status;
+                usuarioUpdate.Rol = usuario.Rol;
+                _context.Update(usuarioUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
