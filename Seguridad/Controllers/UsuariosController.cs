@@ -37,6 +37,12 @@ namespace Seguridad.Controllers
             {
                 query = query.Where(s => s.Status == usuario.Status);
             }
+
+            //cantidad de registros.
+            if (usuario.Take == 0)
+                usuario.Take = 10;
+            query = query.Take(usuario.Take);
+
             return query != null ? View(await query.ToListAsync()):
                 Problem("Entity set 'ApplicationDbContext.Usuarios'  is null.");
         }

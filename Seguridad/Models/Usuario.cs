@@ -31,5 +31,8 @@ namespace Seguridad.Models
         [Compare("Password", ErrorMessage ="La contraseña no coincide")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe de tener entre 6 y 100 carcateres")]
         public string ConfirmPassword { get; set; }
+
+        [NotMapped]
+        public int Take { get; set; }
     }
 }
