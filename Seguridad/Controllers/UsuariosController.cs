@@ -93,7 +93,8 @@ namespace Seguridad.Controllers
             {
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.Name, usuario.Email),
+                    new Claim(ClaimTypes.Name, usuarioAut.Email),
+                    new Claim(ClaimTypes.Role, usuarioAut.Rol),
                     new Claim("IdUsario", usuarioAut.IdUsuario.ToString())
                 };
 
@@ -112,14 +113,14 @@ namespace Seguridad.Controllers
 
 
         // GET: Usuarios/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Apellido,Email,Password,Status,Rol")] Usuario usuario)
@@ -134,6 +135,7 @@ namespace Seguridad.Controllers
         }
 
         // GET: Usuarios/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Usuarios == null)
@@ -150,8 +152,8 @@ namespace Seguridad.Controllers
         }
 
         // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,Nombre,Apellido,Email,Rol,Status")] Usuario usuario)
@@ -209,6 +211,7 @@ namespace Seguridad.Controllers
 
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
