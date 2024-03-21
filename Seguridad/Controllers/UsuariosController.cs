@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -64,6 +68,43 @@ namespace Seguridad.Controllers
 
             return View(usuario);
         }
+
+
+        // GET: Usuarios/Login
+        //Carga la vista
+        public IActionResult Login(string ReturnUrl)
+        {
+            ViewBag.pReturnUrl = ReturnUrl;
+            return View();
+        }
+
+        //se recibe, se comparann datos
+        [HttpPost]
+        public async Task<IActionResult> Login([Bind("Email,Password")] Usuario usuario, string ReturnUrl)
+        {
+            usuario.Password = CalcularHashMD5(usuario.Password);
+            var usuarioAut = await _context.Usuarios.FirstOrDefaultAsync(s => s.Email == usuario.Email && s.Password == usuario.Password && s.Status == 1);
+            if (usuarioAut?.IdUsuario > 0 && usuarioAut.Email == usuario.Email)
+            {
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, usuario.Email),
+                    new Claim("IdUsario", usuarioAut.IdUsuario.ToString())
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), new AuthenticationProperties { IsPersistent = true }); ;
+                var result = User.Identity.IsAuthenticated;
+                if (!string.IsNullOrWhiteSpace(ReturnUrl))
+                    return Redirect(ReturnUrl);
+                else
+                    return RedirectToAction("Index", "Home");
+            }
+            else ViewBag.Error = "Credenciales Incorrectas";
+            ViewBag.ReturnUrl = ReturnUrl;
+            return View(usuario);
+        }
+
 
         // GET: Usuarios/Create
         public IActionResult Create()
