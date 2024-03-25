@@ -48,6 +48,14 @@
                     <span asp-validation-for="Rol" class="text-danger"></span>
                 </div>
             </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label asp-for="Comentarios" class="control-label"></label>
+            <textarea asp-for="Comentarios" class="form-control"></textarea>
+            <span asp-validation-for="Comentarios" class="text-danger"></span>
+        </div>
+    </div>
             <div class="row">
                 <div class="form-group col-md-12">
                     <input type="submit" value="Editar" class="btn btn-primary" />

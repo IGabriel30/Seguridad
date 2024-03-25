@@ -37,5 +37,7 @@ namespace Seguridad.Models
 
         [NotMapped]
         public int Take { get; set; }
+
+        public string Comentarios { get; set; }
     }
 }

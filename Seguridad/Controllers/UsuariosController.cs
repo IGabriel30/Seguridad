@@ -123,7 +123,7 @@ namespace Seguridad.Controllers
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Apellido,Email,Password,Status,Rol")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("IdUsuario,Nombre,Apellido,Email,Password,Status,Rol,Comentarios")] Usuario usuario)
         {
 
             usuario.Password = CalcularHashMD5(usuario.Password);
@@ -156,7 +156,7 @@ namespace Seguridad.Controllers
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,Nombre,Apellido,Email,Rol,Status")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,Nombre,Apellido,Email,Rol,Status,Comentarios")] Usuario usuario)
         {
             if (id != usuario.IdUsuario)
             {
@@ -172,6 +172,7 @@ namespace Seguridad.Controllers
                 usuarioUpdate.Email = usuario.Email;
                 usuarioUpdate.Status = usuario.Status;
                 usuarioUpdate.Rol = usuario.Rol;
+                usuarioUpdate.Comentarios = usuario.Comentarios;
                 _context.Update(usuarioUpdate);
                     await _context.SaveChangesAsync();
                 }
