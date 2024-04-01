@@ -192,6 +192,22 @@ namespace Seguridad.Controllers
             //return View(usuario);
         }
 
+
+        //acceso a los claims de usuario.
+        [Authorize]
+        public async Task<IActionResult> Perfil()
+        {
+            int id = int.Parse(User.FindFirstValue("IdUsuario"));
+            var usuario = await _context.Usuarios.FindAsync(id);
+
+            if(usuario == null)
+            { 
+                return NotFound(); 
+            }
+            return View(usuario);
+        }
+
+
         // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
